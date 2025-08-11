@@ -6,6 +6,7 @@ Monorepo GoFiber Clean is a base template for Go projects, structured using Clea
 
 - **GoFiber**: Web framework for building fast and scalable APIs.
 - **GORM**: Object-Relational Mapper (ORM) for database operations, utilizing GORM datatypes.
+- **Redis**: In-memory key–value database, used as a distributed cache and message broker, with optional durability.
 - **Air**: Live reload for Go applications during development.
 - **Zap**: Fast, structured logging.
 - **Validator V10**: Validation of incoming data for requests.
