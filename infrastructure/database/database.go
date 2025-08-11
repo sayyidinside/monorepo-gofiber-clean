@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/sayyidinside/gofiber-clean-fresh/infrastructure/config"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -36,9 +36,10 @@ func Connect() (*gorm.DB, error) {
 	}
 
 	// Construct database URL
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPassword, dbHost, dbPort, dbName)
-
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+// 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPassword, dbHost, dbPort, dbName)
+	dsn := fmt.Sprintf("user=%s password=%s host=%s port=%s   dbname=%s sslmode=disable TimeZone=Asia/Jakarta", dbUser, dbPassword, dbHost, dbPort, dbName)
+// 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
 		return nil, err

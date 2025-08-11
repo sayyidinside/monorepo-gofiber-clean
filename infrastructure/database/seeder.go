@@ -110,7 +110,7 @@ func seedingModuleUserManagement(tx *gorm.DB) error {
 	modules := []entity.Module{}
 
 	var userModule int64
-	tx.Model(&entity.Module{}).Where("name = ?", "user").Count(&userModule)
+	tx.Model(&entity.Module{}).Where("name = ?", "User").Count(&userModule)
 	if userModule == 0 {
 		userUUID, err := uuid.Parse("1234f6bf-8a3d-46de-a89d-ed901f90a7ad")
 		if err != nil {
@@ -186,7 +186,7 @@ func seedingPermissionUserManagement(tx *gorm.DB) error {
 	// Permission for user module
 	{
 		var userModule entity.Module
-		if result := tx.Limit(1).Where("name = ?", "user").Find(&userModule); result.RowsAffected == 0 {
+		if result := tx.Limit(1).Where("name = ?", "User").Find(&userModule); result.RowsAffected == 0 {
 			return errors.New("user module not found")
 		}
 
@@ -453,7 +453,7 @@ func seedingUserAdmin(tx *gorm.DB) error {
 
 	// Find admin role
 	var adminRole entity.Role
-	if result := tx.Limit(1).Where("name = ?", "admin").Find(&adminRole); result.RowsAffected == 0 {
+	if result := tx.Limit(1).Where("name = ?", "Admin").Find(&adminRole); result.RowsAffected == 0 {
 		return errors.New("admin role not found")
 	}
 
@@ -482,7 +482,7 @@ func seedingUserGuest(tx *gorm.DB) error {
 
 	// Find guest role
 	var userRole entity.Role
-	if result := tx.Limit(1).Where("name = ?", "user").Find(&userRole); result.RowsAffected == 0 {
+	if result := tx.Limit(1).Where("name = ?", "User").Find(&userRole); result.RowsAffected == 0 {
 		return errors.New("user role not found")
 	}
 
