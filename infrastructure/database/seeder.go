@@ -60,7 +60,7 @@ func Seeding(db *gorm.DB) {
 
 	{ // Seeding role guest
 		var totalRoleUser int64
-		tx.Model(&entity.Role{}).Where("name = ?", "user").Count(&totalRoleUser)
+		tx.Model(&entity.Role{}).Where("name = ?", "User").Count(&totalRoleUser)
 		if totalRoleUser == 0 {
 			if err := seedingRoleGuest(tx); err != nil {
 				log.Printf("Seeding role user failed: %v", err)
