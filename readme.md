@@ -1,11 +1,11 @@
-# GoFiber Clean Fresh
+# Monorepo GoFiber Clean
 
-GoFiber Clean Fresh is a base template for Go projects, structured using Clean Architecture principles with some modifications to suit organizational requirements and knowledge from previous projects (Node.js Express-based). This template integrates essential packages and comes with user management, authentication-related middleware, and role/permission management.
+Monorepo GoFiber Clean is a base template for Go projects, structured using Clean Architecture principles with some modifications to suit organizational requirements and knowledge from previous projects (Node.js Express-based) and using Monorepo development strategy. This template integrates essential packages and comes with user management, authentication-related middleware, and role/permission management.
 
 ## Features / Technologies Used
 
 - **GoFiber**: Web framework for building fast and scalable APIs.
-- **GORM**: Object-Relational Mapper (ORM) for MySQL database operations, utilizing GORM datatypes.
+- **GORM**: Object-Relational Mapper (ORM) for database operations, utilizing GORM datatypes.
 - **Air**: Live reload for Go applications during development.
 - **Zap**: Fast, structured logging.
 - **Validator V10**: Validation of incoming data for requests.
@@ -13,6 +13,7 @@ GoFiber Clean Fresh is a base template for Go projects, structured using Clean A
 - **Bluemonday**: HTML sanitizer for handling user-generated content securely.
 - **Viper**: For configuration management, with support for environment variables and multiple file formats (YAML, JSON, etc.), including auto-reloading of configuration files.
 - **Clean Architecture**: A layered approach to structure the codebase for maintainability and scalability.
+- **Monorepo**: software-development strategy in which the code for a number of projects is stored in the same repository.
 
 ## Project Structure
 
@@ -53,8 +54,8 @@ GoFiber Clean Fresh is a base template for Go projects, structured using Clean A
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/sayyidinside/gofiber-clean-fresh.git
-cd gofiber-clean-fresh
+git clone https://github.com/sayyidinside/monorepo-gofiber-clean.git
+cd monorepo-gofiber-clean
 ```
 
 2. **Set up environment variables:**
