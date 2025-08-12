@@ -44,9 +44,5 @@ func Connect() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	// Migrate and seed the database
-	Migrate(db)
-	Seeding(db)
-
 	return db, nil
 }
