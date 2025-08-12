@@ -179,6 +179,10 @@ func Authorization(isAdminOnly bool, isValidOnly bool, allowedPermissions []stri
 			}
 		}
 
+		if isValidOnly {
+			return c.Next()
+		}
+
 		return helpers.ResponseFormatter(c, helpers.BaseResponse{
 			Status:  fiber.StatusForbidden,
 			Success: false,
