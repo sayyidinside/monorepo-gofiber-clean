@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -511,7 +510,7 @@ func LogSystemWithDefer(ctx context.Context, logData *Log) func() {
 	// Log masuk
 	// logData.Message = "Entering"
 	CreateLogSystem23(ctx, logData)
-	log.Println(logData)
+	// log.Println(logData)
 
 	// `defer` yang akan dieksekusi saat fungsi selesai
 	return func() {
