@@ -36,3 +36,11 @@ func (p *Profile) BeforeCreate(tx *gorm.DB) (err error) {
 
 	return
 }
+
+func (p *Profile) GetID() uint {
+	if p == nil {
+		return 0
+	}
+
+	return p.ID
+}
