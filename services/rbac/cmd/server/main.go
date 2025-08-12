@@ -42,7 +42,7 @@ func main() {
 	shutdownHandler := shutdown.NewHandler(app, depedency.DB, depedency.Redis).WithTimeout(30 * time.Second)
 
 	go func() {
-		if err := app.Listen(fmt.Sprintf(":%s", depedency.Config.Port)); err != nil {
+		if err := app.Listen(fmt.Sprintf(":%s", depedency.Config.APort)); err != nil {
 			log.Panic(err)
 		}
 	}()

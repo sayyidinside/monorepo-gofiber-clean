@@ -1,0 +1,26 @@
+# .air.toml
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -o ./tmp/main.exe ./cmd/server"
+  bin = "tmp/main"
+  full_bin = "./tmp/main"
+  delay = 1000 # Delay in milliseconds before restarting the server
+  exclude_dir = [
+    "tmp",         # Temporary build output
+    "vendor",      # Vendor directory (if using go modules)
+    ".git",        # Git files
+    "tests",       # Test files/directory
+    # "pkg",         # Utilities and shared libraries usually do not need frequent rebuilds
+    # "config",      # Configuration files directory
+    # "infrastructure" # Infrastructure code that is less frequently modified
+  ]
+  include_ext = ["go", "tpl", "tmpl", "html"]  # Watch these extensions
+  exclude_regex = ["_test\\.go"]  # Exclude test files from being watched
+
+[log]
+time = true
+
+[screen]
+clear_on_rebuild = true

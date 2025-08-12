@@ -11,7 +11,8 @@ type Config struct {
 	// General Config
 	AppName   string `mapstructure:"APP_NAME"`
 	Env       string `mapstructure:"ENV"`
-	Port      string `mapstructure:"PORT"`
+	APort     string `mapstructure:"A_PORT"`
+	BPort     string `mapstructure:"B_PORT"`
 	AdminPass string `mapstructure:"ADMIN_PASS"`
 	Debug     bool   `mapstructure:"DEBUG"`
 
@@ -69,7 +70,7 @@ type Config struct {
 var AppConfig *Config
 
 func LoadConfig() (*Config, error) {
-	viper.SetConfigFile("./.env")
+	viper.SetConfigFile("../../.env")
 
 	// Enable Viper to read environment variables
 	viper.AutomaticEnv()
