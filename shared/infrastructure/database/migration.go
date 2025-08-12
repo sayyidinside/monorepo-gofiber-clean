@@ -30,5 +30,9 @@ func Migrate(db *gorm.DB) error {
 		return err
 	}
 
+	if err := db.AutoMigrate(&entity.Profile{}); err != nil {
+		return err
+	}
+
 	return nil
 }
