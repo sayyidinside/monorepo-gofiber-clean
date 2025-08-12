@@ -5,14 +5,14 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/sayyidinside/monorepo-gofiber-clean/cmd/worker"
-	"github.com/sayyidinside/monorepo-gofiber-clean/domain/repository"
-	"github.com/sayyidinside/monorepo-gofiber-clean/domain/service"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/config"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/redis"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/handler"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/middleware"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/routes"
-	"github.com/sayyidinside/monorepo-gofiber-clean/pkg/helpers"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/repository"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/service"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/config"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/redis"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/handler"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/middleware"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/routes"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 	"gorm.io/gorm"
 )
 
