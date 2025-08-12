@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/sayyidinside/gofiber-clean-fresh/domain/entity"
+	"github.com/sayyidinside/gofiber-clean-fresh/services/rbac/domain/entity"
 )
 
 func GenerateToken(user *entity.User, expireTime int, secret string, isRefresh bool) (string, error) {

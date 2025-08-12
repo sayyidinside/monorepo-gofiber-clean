@@ -1,0 +1,16 @@
+module github.com/sayyidinside/gofiber-clean-fresh/services/rbac
+
+go 1.22
+
+require (
+    // Dependensi eksternal yang dibutuhkan oleh modul RBAC
+    github.com/gofiber/fiber/v2 v2.52.4
+    
+    // Dependensi ke modul lokal lain jika ada
+    github.com/sayyidinside/gofiber-clean-fresh/pkg v0.0.0-20240101000000-000000000000
+    github.com/sayyidinside/gofiber-clean-fresh/common v0.0.0-20240101000000-000000000000
+)
+
+// Perlu menggunakan 'replace' untuk mengarahkan ke modul lokal
+replace github.com/sayyidinside/gofiber-clean-fresh/pkg => ../../pkg
+replace github.com/sayyidinside/gofiber-clean-fresh/common => ../../common

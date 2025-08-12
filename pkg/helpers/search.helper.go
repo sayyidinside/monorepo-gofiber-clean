@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"github.com/sayyidinside/gofiber-clean-fresh/interfaces/model"
+	"github.com/sayyidinside/gofiber-clean-fresh/services/rbac/interfaces/model"
 	"gorm.io/gorm"
 )
 

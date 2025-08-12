@@ -16,7 +16,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/natefinch/lumberjack"
-	"github.com/sayyidinside/gofiber-clean-fresh/infrastructure/config"
+	"github.com/sayyidinside/gofiber-clean-fresh/shared/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
