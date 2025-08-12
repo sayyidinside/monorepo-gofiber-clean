@@ -4,14 +4,14 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sayyidinside/monorepo-gofiber-clean/cmd/worker"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/cmd/worker"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/interfaces/http/handler"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/interfaces/http/routes"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/repository"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/service"
-	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/config"
+	sharedBootstrap "github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/bootstrap"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/redis"
-	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/handler"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/middleware"
-	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/routes"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 	"gorm.io/gorm"
 )
@@ -52,9 +52,10 @@ func Initialize(app *fiber.App, db *gorm.DB, cacheRedis *redis.CacheClient, lock
 	routes.Setup(app, handler)
 }
 
-func InitApp() {
-	if err := config.LoadConfig(); err != nil {
-		log.Println(err.Error())
+func InitApp() *sharedBootstrap.Deps {
+	deps, err := sharedBootstrap.NewDeps()
+	if err != nil {
+		log.Fatalf("Failed to connect to depedency: %v", err)
 	}
 
 	worker.StartLogWorker()
@@ -63,4 +64,5 @@ func InitApp() {
 
 	middleware.InitWhitelistIP()
 
+	return deps
 }

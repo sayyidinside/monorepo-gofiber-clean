@@ -5,12 +5,12 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/config"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/handler"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/middleware"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/routes/tests"
-	v1 "github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/routes/v1"
-	"github.com/sayyidinside/monorepo-gofiber-clean/pkg/helpers"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/interfaces/http/handler"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/interfaces/http/routes/tests"
+	v1 "github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/interfaces/http/routes/v1"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/config"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/middleware"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 )
 
 func Setup(app *fiber.App, handlers *handler.Handlers) {

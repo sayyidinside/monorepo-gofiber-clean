@@ -8,19 +8,16 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
-	"github.com/sayyidinside/monorepo-gofiber-clean/cmd/bootstrap"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/config"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/database"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/redis"
-	"github.com/sayyidinside/monorepo-gofiber-clean/infrastructure/shutdown"
-	"github.com/sayyidinside/monorepo-gofiber-clean/pkg/helpers"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/cmd/bootstrap"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/shutdown"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 )
 
 func main() {
-	bootstrap.InitApp()
+	depedency := bootstrap.InitApp()
 
 	app := fiber.New(fiber.Config{
-		AppName:                 config.AppConfig.AppName,
+		AppName:                 depedency.Config.AppName,
 		EnableIPValidation:      true,
 		EnableTrustedProxyCheck: true,
 	})
@@ -38,21 +35,14 @@ func main() {
 
 	app.Use(helpers.ErrorHelper)
 
-	db, err := database.Connect()
-	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
-	}
-
-	redisClient := redis.Connect(config.AppConfig)
-
-	bootstrap.Initialize(app, db, redisClient.CacheClient, redisClient.LockClient)
+	bootstrap.Initialize(app, depedency.DB, depedency.Redis.CacheClient, depedency.Redis.LockClient)
 
 	app.Use(helpers.NotFoundHelper)
 
-	shutdownHandler := shutdown.NewHandler(app, db, redisClient).WithTimeout(30 * time.Second)
+	shutdownHandler := shutdown.NewHandler(app, depedency.DB, depedency.Redis).WithTimeout(30 * time.Second)
 
 	go func() {
-		if err := app.Listen(fmt.Sprintf(":%s", config.AppConfig.Port)); err != nil {
+		if err := app.Listen(fmt.Sprintf(":%s", depedency.Config.Port)); err != nil {
 			log.Panic(err)
 		}
 	}()

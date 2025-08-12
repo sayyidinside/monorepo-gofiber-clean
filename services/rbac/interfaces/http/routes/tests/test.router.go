@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/sayyidinside/monorepo-gofiber-clean/pkg/helpers"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 )
 
 func SetupApiTestRoutes(test fiber.Router) {

@@ -3,7 +3,7 @@ package worker
 import (
 	"time"
 
-	"github.com/sayyidinside/monorepo-gofiber-clean/pkg/helpers"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 )
 
 type LogData struct {

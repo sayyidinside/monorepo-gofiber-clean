@@ -2,9 +2,9 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/sayyidinside/monorepo-gofiber-clean/domain/service"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/model"
-	"github.com/sayyidinside/monorepo-gofiber-clean/pkg/helpers"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/service"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/model"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 )
 
 type AuthHandler interface {

@@ -2,7 +2,7 @@ package users
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/sayyidinside/monorepo-gofiber-clean/interfaces/http/handler"
+	"github.com/sayyidinside/monorepo-gofiber-clean/services/rbac/interfaces/http/handler"
 )
 
 func RegisterRoutes(route fiber.Router, handler *handler.UserManagementHandler) {
