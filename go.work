@@ -1,6 +1,7 @@
 go 1.23.0
 
 use (
-	./shared
+	./services/migration
 	./services/rbac
+	./shared
 )
