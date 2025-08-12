@@ -2,6 +2,9 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"log"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -42,13 +45,22 @@ func (s *profileService) GetByUserID(ctx context.Context, id uint) helpers.BaseR
 	logData := helpers.CreateLog(s)
 	defer helpers.LogSystemWithDefer(ctx, &logData)
 
-	profile, err := s.profileRepository.FindByUserID(ctx, id)
-	if profile == nil || err != nil {
-		return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
-			Status:  fiber.StatusNotFound,
-			Success: false,
-			Message: "Profile not found",
-		})
+	profile := &entity.Profile{}
+	profileCacheKey := fmt.Sprintf("cache:profile-detail:user-id:%d", id)
+
+	if err := s.cacheRedis.GetObject(ctx, profileCacheKey, profile); err != nil || profile.GetID() == 0 {
+		profile, err := s.profileRepository.FindByUserID(ctx, id)
+		if profile == nil || err != nil {
+			return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
+				Status:  fiber.StatusNotFound,
+				Success: false,
+				Message: "Profile not found",
+			})
+		}
+
+		if err := s.cacheRedis.Set(ctx, profileCacheKey, profile, 5*time.Minute); err != nil {
+			log.Println(err)
+		}
 	}
 
 	profileModel := model.ProfileToDetailModel(profile)
@@ -65,22 +77,40 @@ func (s *profileService) GetByUserUUID(ctx context.Context, uuid uuid.UUID) help
 	logData := helpers.CreateLog(s)
 	defer helpers.LogSystemWithDefer(ctx, &logData)
 
-	user, err := s.userRepository.FindByUUID(ctx, uuid)
-	if user == nil || err != nil {
-		return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
-			Status:  fiber.StatusNotFound,
-			Success: false,
-			Message: "Profile not found",
-		})
+	user := &entity.User{}
+	userCacheKey := fmt.Sprintf("cache:user-detail:user-uuid:%d", uuid)
+
+	if err := s.cacheRedis.GetObject(ctx, userCacheKey, user); err != nil || user.GetID() == 0 {
+		user, err := s.userRepository.FindByUUID(ctx, uuid)
+		if user == nil || err != nil {
+			return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
+				Status:  fiber.StatusNotFound,
+				Success: false,
+				Message: "Profile not found",
+			})
+		}
+
+		if err := s.cacheRedis.Set(ctx, userCacheKey, user, 5*time.Minute); err != nil {
+			log.Println(err)
+		}
 	}
 
-	profile, err := s.profileRepository.FindByUserID(ctx, user.ID)
-	if profile == nil || err != nil {
-		return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
-			Status:  fiber.StatusNotFound,
-			Success: false,
-			Message: "Profile not found",
-		})
+	profile := &entity.Profile{}
+	profileCacheKey := fmt.Sprintf("cache:profile-detail:user-id:%d", user.ID)
+
+	if err := s.cacheRedis.GetObject(ctx, profileCacheKey, profile); err != nil || profile.GetID() == 0 {
+		profile, err := s.profileRepository.FindByUserID(ctx, user.ID)
+		if profile == nil || err != nil {
+			return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
+				Status:  fiber.StatusNotFound,
+				Success: false,
+				Message: "Profile not found",
+			})
+		}
+
+		if err := s.cacheRedis.Set(ctx, profileCacheKey, profile, 5*time.Minute); err != nil {
+			log.Println(err)
+		}
 	}
 
 	profileModel := model.ProfileToDetailModel(profile)
@@ -150,6 +180,14 @@ func (s *profileService) UpdateByUserID(ctx context.Context, input *model.Profil
 				Errors:  err,
 			})
 		}
+	}
+
+	profileCacheKey := fmt.Sprintf("cache:profile-detail:user-id:%d", profile.UserID)
+	if err := s.cacheRedis.Del(ctx, profileCacheKey); err != nil {
+		log.Println(err)
+	}
+	if err := s.cacheRedis.Set(ctx, profileCacheKey, profile, 5*time.Minute); err != nil {
+		log.Println(err)
 	}
 
 	return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
@@ -226,6 +264,14 @@ func (s *profileService) UpdateByUserUUID(ctx context.Context, input *model.Prof
 				Errors:  err,
 			})
 		}
+	}
+
+	profileCacheKey := fmt.Sprintf("cache:profile-detail:user-id:%d", profile.UserID)
+	if err := s.cacheRedis.Del(ctx, profileCacheKey); err != nil {
+		log.Println(err)
+	}
+	if err := s.cacheRedis.Set(ctx, profileCacheKey, profile, 5*time.Minute); err != nil {
+		log.Println(err)
 	}
 
 	return helpers.LogBaseResponse(&logData, helpers.BaseResponse{
