@@ -13,8 +13,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func Seeding(db *gorm.DB) {
+func Seeding(db *gorm.DB) error {
 	tx := db.Begin()
+	defer tx.Rollback()
 
 	{ // Seeding Module
 		var totalModule int64
@@ -22,8 +23,7 @@ func Seeding(db *gorm.DB) {
 		if totalModule != 4 {
 			if err := seedingModuleUserManagement(tx); err != nil {
 				log.Printf("Seeding module user management failed: %v", err)
-				tx.Rollback()
-				return
+				return err
 			}
 
 			log.Println("Success seeding module user management")
@@ -36,8 +36,7 @@ func Seeding(db *gorm.DB) {
 		if totalPermission == 0 {
 			if err := seedingPermissionUserManagement(tx); err != nil {
 				log.Printf("Seeding permission user management failed: %v", err)
-				tx.Rollback()
-				return
+				return err
 			}
 
 			log.Println("Success seeding permission user management")
@@ -50,8 +49,7 @@ func Seeding(db *gorm.DB) {
 		if totalRoleAdmin == 0 {
 			if err := seedingRoleAdmin(tx); err != nil {
 				log.Printf("Seeding role admin failed: %v", err)
-				tx.Rollback()
-				return
+				return err
 			}
 
 			log.Println("Success seeding role admin")
@@ -64,8 +62,7 @@ func Seeding(db *gorm.DB) {
 		if totalRoleUser == 0 {
 			if err := seedingRoleGuest(tx); err != nil {
 				log.Printf("Seeding role user failed: %v", err)
-				tx.Rollback()
-				return
+				return err
 			}
 
 			log.Println("Success seeding role user")
@@ -78,8 +75,7 @@ func Seeding(db *gorm.DB) {
 		if totalAdmin == 0 {
 			if err := seedingUserAdmin(tx); err != nil {
 				log.Printf("Seeding user admin failed: %v", err)
-				tx.Rollback()
-				return
+				return err
 			}
 
 			log.Println("Success seeding user admin")
@@ -92,8 +88,7 @@ func Seeding(db *gorm.DB) {
 		if totalUser == 0 {
 			if err := seedingUserGuest(tx); err != nil {
 				log.Printf("Seeding user guest failed: %v", err)
-				tx.Rollback()
-				return
+				return err
 			}
 
 			log.Println("Success seeding user guest")
@@ -103,7 +98,10 @@ func Seeding(db *gorm.DB) {
 	// Commit the transaction if everything is successful
 	if err := tx.Commit().Error; err != nil {
 		log.Printf("Transaction commit failed: %v", err)
+		return err
 	}
+
+	return nil
 }
 
 func seedingModuleUserManagement(tx *gorm.DB) error {

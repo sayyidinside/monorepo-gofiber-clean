@@ -5,11 +5,30 @@ import (
 	"gorm.io/gorm"
 )
 
-func Migrate(db *gorm.DB) {
-	db.AutoMigrate(&entity.Module{})
-	db.AutoMigrate(&entity.RolePermission{})
-	db.AutoMigrate(&entity.Permission{})
-	db.AutoMigrate(&entity.Role{})
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.RefreshToken{})
+func Migrate(db *gorm.DB) error {
+	if err := db.AutoMigrate(&entity.Module{}); err != nil {
+		return err
+	}
+
+	if err := db.AutoMigrate(&entity.RolePermission{}); err != nil {
+		return err
+	}
+
+	if err := db.AutoMigrate(&entity.Permission{}); err != nil {
+		return err
+	}
+
+	if err := db.AutoMigrate(&entity.Role{}); err != nil {
+		return err
+	}
+
+	if err := db.AutoMigrate(&entity.User{}); err != nil {
+		return err
+	}
+
+	if err := db.AutoMigrate(&entity.RefreshToken{}); err != nil {
+		return err
+	}
+
+	return nil
 }
