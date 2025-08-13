@@ -76,15 +76,36 @@ cd monorepo-gofiber-clean
 
 Create a `.env` file based on `.env.example` and update the configuration as needed.
 
-3. **Install dependencies for each services:**
+3. **Sync go workspace:**
 
 ```bash
+go work sync
+```
+
+4. **Install dependencies for each services:**
+
+```bash
+cd ./services/service_a
+go mod tidy
+
+cd ./services/service_a
 go mod tidy
 ```
 
-4. **Run the application (with live reload):**
+5. **Run migration from migration service:**
 
 ```bash
+cd ./services/migration
+go run main.go
+```
+
+6. **Run the application for each services (with live reload):**
+
+```bash
+cd ./services/service_a
+air
+
+cd ./services/service_b
 air
 ```
 
