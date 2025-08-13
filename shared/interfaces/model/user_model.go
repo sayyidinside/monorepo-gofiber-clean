@@ -91,12 +91,10 @@ func UserToListModel(users *[]entity.User) *[]UserList {
 }
 
 func (userInput *UserInput) ToEntity() *entity.User {
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(userInput.Password), bcrypt.DefaultCost)
-
 	return &entity.User{
 		Username:    userInput.Username,
 		Email:       userInput.Email,
-		Password:    string(hashedPassword),
+		Password:    userInput.Password,
 		RoleID:      userInput.RoleID,
 		ValidatedAt: sql.NullTime{Time: time.Now(), Valid: true},
 	}
