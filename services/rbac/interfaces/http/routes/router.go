@@ -24,7 +24,7 @@ func Setup(app *fiber.App, handlers *handler.Handlers) {
 	api.Use(middleware.CORS())
 	api.Use(middleware.WhitelistIP())
 	api.Use(middleware.RateLimiter())
-	api.Use(middleware.Cache())
+	// api.Use(middleware.Cache())
 
 	v1.RegisterRoutes(api, handlers)
 	tests.SetupApiTestRoutes(test)
