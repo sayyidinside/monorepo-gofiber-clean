@@ -1,6 +1,7 @@
 # Monorepo GoFiber Clean
 
-Monorepo GoFiber Clean is a base template for Go projects, structured using Clean Architecture principles with some modifications to suit organizational requirements and knowledge from previous projects (Node.js Express-based) and using Monorepo development strategy. This template integrates essential packages and comes with user management, authentication-related middleware, and role/permission management.
+Monorepo GoFiber Clean is a Go backend starter following Clean Architecture principles, adapted for a monorepo layout.
+The repo is split into services/ (each service is a standalone module) and a shared/ module for reusable domain, infra and helpers. It includes tooling for local dev (Air hot-reload), DI/bootstrapping, migrations, and a recommended workflow for CI/CD.
 
 ## Features / Technologies Used
 
@@ -19,35 +20,48 @@ Monorepo GoFiber Clean is a base template for Go projects, structured using Clea
 ## Project Structure
 
 ```bash
-├── cmd/                     # Main application entry points
-│   ├── server/              # HTTP server setup
-│   ├── worker/              # Background worker setup
-│   ├── bootstrap/           # depedency initialization
-├── domain/                  # Core business logic and domain-specific concerns
-│   ├── entity/              # Defines the core business entities (user, role, permission, etc)
-│   ├── repository/          # Defines the interfaces for interacting with data persistence.
-│   └── service/             # Contains the business logic
-├── infrastructure/          # Infrastructure-specific code (frameworks, DB, etc.)
-│   ├── config/              # Configuration files (loading .env variables, app settings)
-│   ├── database/            # Database setup and implementations (GORM)
-│   ├── logger/              # Logging setup (zap)
-│   ├── scheduler/           # Scheduling logic (gocron)
-├── interfaces/              # Interface adapters (Delivery layer)
-│   ├── http/                # HTTP delivery (GoFiber routes)
-│   │   ├── auth/            # HTTP handlers for auth-related routes
-│   │   ├── handler/         # General handlers (HTTP request handling logic)
-│   │   ├── middleware/      # HTTP middleware (auth, JWT, role-based)
-│   │   ├── permission/      # HTTP handlers for permission-related routes
-│   │   ├── role/            # HTTP handlers for role-related routes
-│   │   ├── routes/          # Route definitions for api
-│   │   │   └── v1/          # Versioned API routes (e.g., v1 API)
-│   │   │       └── users/   # Route related to user management
-│   ├── model/               # Data transfer objects (DTOs) for mapping HTTP <-> domain
-├── pkg/                     # Shared libraries and utilities
-│   ├── helpers/             # Generic helper functions (not domain-specific)
-│   └── utils/               # Generic utility functions (not domain-specific)
-├── tests/                   # Unit and integration tests
-└── .env                     # Environment variables
+├── services/                         # Independent services (each is a separate binary)
+│    ├── service_a/                   # Example service folder
+│    │    ├── cmd/                    # Main application entry points
+│    │    │   ├── server/             # HTTP server setup
+│    │    │   ├── worker/             # Background worker setup
+│    │    │   ├── bootstrap/          # depedency initialization
+│    │    ├── domain/                 # Spesific Core business logic and domain-specific concerns
+│    │    │   ├── entity/             # Defines the core business entities (user, role, permission, etc)
+│    │    │   ├── repository/         # Defines the interfaces for interacting with data persistence.
+│    │    │   └── service/            # Contains the business logic
+│    │    ├── interfaces/             # Spesific interface adapters (Delivery layer)
+│    │    │   ├── http/               # HTTP delivery (GoFiber routes)
+│    │    │   │   ├── auth/           # HTTP handlers for auth-related routes
+│    │    │   │   ├── handler/        # General handlers (HTTP request handling logic)
+│    │    │   │   ├── permission/     # HTTP handlers for permission-related routes
+│    │    │   │   ├── role/           # HTTP handlers for role-related routes
+│    │    │   │   ├── routes/         # Route definitions for api
+│    │    │   │   │   └── v1/         # Versioned API routes (e.g., v1 API)
+│    │    │   │   │       └── users/  # Route related to user management
+│    │    │   ├── model/              # Data transfer objects (DTOs) for mapping HTTP <-> domain
+├── shared/                           # Code reusable across services
+│   ├── domain/                       # Shared Core business logic and domain-specific concerns
+│   │   ├── entity/                   # Defines the core business entities (user, role, permission, etc)
+│   │   ├── repository/               # Defines the interfaces for interacting with data persistence.
+│   │   └── service/                  # Contains the business logic
+│   ├── infrastructure/               # Shared infrastructure-specific code (frameworks, DB, etc.)
+│   │   ├── config/                   # Configuration files (loading .env variables, app settings)
+│   │   ├── database/                 # Database setup and implementations (GORM)
+│   │   ├── redis/                    # Redis setup and implementations
+│   │   ├── shutdown/                 # Service gracefull shutdown implementation
+│   │   ├── logger/                   # Logging setup (zap)
+│   │   ├── scheduler/                # Scheduling logic (gocron)
+│   │   ├── bootstrap/                # Reusable depedency initialization
+│   ├── interfaces/                   # Shared interface adapters (Delivery layer)
+│   │   ├── http/                     # HTTP delivery (GoFiber routes)
+│   │   │   ├── middleware/           # HTTP middleware (auth, JWT, role-based)
+│   │   ├── model/                    # Data transfer objects (DTOs) for mapping HTTP <-> domain
+│   ├── pkg/                          # Shared libraries and utilities
+│   │   ├── helpers/                  # Generic helper functions (not domain-specific)
+│   │   └── utils/                    # Generic utility functions (not domain-specific)
+├── tests/                            # Unit and integration tests
+└── .env                              # Environment variables
 ```
 
 ## Installation
@@ -63,15 +77,36 @@ cd monorepo-gofiber-clean
 
 Create a `.env` file based on `.env.example` and update the configuration as needed.
 
-3. **Install dependencies:**
+3. **Sync go workspace:**
 
 ```bash
+go work sync
+```
+
+4. **Install dependencies for each services:**
+
+```bash
+cd ./services/service_a
+go mod tidy
+
+cd ./services/service_a
 go mod tidy
 ```
 
-4. **Run the application (with live reload):**
+5. **Run database migration from migration service:**
 
 ```bash
+cd ./services/migration
+go run main.go
+```
+
+6. **Run the application for each services (with live reload):**
+
+```bash
+cd ./services/service_a
+air
+
+cd ./services/service_b
 air
 ```
 
