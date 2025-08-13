@@ -19,6 +19,7 @@ func RegisterUserRoutes(route fiber.Router, handler handler.UserHandler) {
 			"Update User",
 			"Delete User",
 		}),
+		middleware.Cache(),
 		handler.GetUser,
 	)
 
