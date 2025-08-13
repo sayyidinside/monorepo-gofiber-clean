@@ -153,7 +153,6 @@ func (r *roleRepository) Count(ctx context.Context, query *model.QueryGet) int64
 
 	// Apply Query Operation
 	tx = tx.Scopes(
-		helpers.Paginate(query),
 		helpers.Order(query, allowedFields),
 		helpers.Filter(query, allowedFields),
 		helpers.Search(query, allowedFields),
@@ -182,7 +181,6 @@ func (r *roleRepository) CountUnscoped(ctx context.Context, query *model.QueryGe
 
 	// Apply Query Operation
 	tx = tx.Scopes(
-		helpers.Paginate(query),
 		helpers.Order(query, allowedFields),
 		helpers.Filter(query, allowedFields),
 		helpers.Search(query, allowedFields),
