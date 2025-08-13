@@ -1,6 +1,7 @@
 # Monorepo GoFiber Clean
 
-Monorepo GoFiber Clean is a base template for Go projects, structured using Clean Architecture principles with some modifications to suit organizational requirements and knowledge from previous projects (Node.js Express-based) and using Monorepo development strategy. This template integrates essential packages and comes with user management, authentication-related middleware, and role/permission management.
+Monorepo GoFiber Clean is a Go backend starter following Clean Architecture principles, adapted for a monorepo layout.
+The repo is split into services/ (each service is a standalone module) and a shared/ module for reusable domain, infra and helpers. It includes tooling for local dev (Air hot-reload), DI/bootstrapping, migrations, and a recommended workflow for CI/CD.
 
 ## Features / Technologies Used
 
@@ -92,7 +93,7 @@ cd ./services/service_a
 go mod tidy
 ```
 
-5. **Run migration from migration service:**
+5. **Run database migration from migration service:**
 
 ```bash
 cd ./services/migration
