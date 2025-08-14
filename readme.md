@@ -61,6 +61,7 @@ The repo is split into services/ (each service is a standalone module) and a sha
 │   │   ├── helpers/                  # Generic helper functions (not domain-specific)
 │   │   └── utils/                    # Generic utility functions (not domain-specific)
 ├── tests/                            # Unit and integration tests
+├── migration/                        # Database migration and seeding tools
 └── .env                              # Environment variables
 ```
 
@@ -93,10 +94,10 @@ cd ./services/service_a
 go mod tidy
 ```
 
-5. **Run database migration from migration service:**
+5. **Run database migration:**
 
 ```bash
-cd ./services/migration
+cd ./migration
 go run main.go
 ```
 
