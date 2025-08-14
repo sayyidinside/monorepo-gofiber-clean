@@ -69,8 +69,8 @@ type Config struct {
 
 var AppConfig *Config
 
-func LoadConfig() (*Config, error) {
-	viper.SetConfigFile("../../.env")
+func LoadConfig(env string) (*Config, error) {
+	viper.SetConfigFile(env)
 
 	// Enable Viper to read environment variables
 	viper.AutomaticEnv()

@@ -13,8 +13,8 @@ type Deps struct {
 	Redis  *redis.RedisClient
 }
 
-func NewDeps() (*Deps, error) {
-	cfg, err := config.LoadConfig()
+func NewDeps(env string) (*Deps, error) {
+	cfg, err := config.LoadConfig(env)
 	if err != nil {
 		return nil, err
 	}
