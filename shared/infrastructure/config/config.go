@@ -49,6 +49,9 @@ type Config struct {
 	RedisAddress  string `mapstructure:"REDIS_ADDRESS"`
 	RedisPassword string `mapstructure:"REDIS_PASSWORD"`
 
+	// RabbitMQ
+	RabbitMQURL string `mapstructure:"RABBITMQ_URL"`
+
 	// Database
 	ProdDbUsername  string `mapstructure:"PROD_DB_USERNAME"`
 	ProdDbPassword  string `mapstructure:"PROD_DB_PASSWORD"`

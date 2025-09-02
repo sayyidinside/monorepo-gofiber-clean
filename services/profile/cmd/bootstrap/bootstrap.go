@@ -37,7 +37,7 @@ func Initialize(app *fiber.App, db *gorm.DB, cacheRedis *redis.CacheClient, lock
 }
 
 func InitApp() *sharedBootstrap.Deps {
-	deps, err := sharedBootstrap.NewDeps("../../.env")
+	deps, err := sharedBootstrap.NewDeps("../../.env", false)
 	if err != nil {
 		log.Fatalf("Failed to connect to depedency: %v", err)
 	}

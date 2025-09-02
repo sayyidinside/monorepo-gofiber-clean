@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	depedency, err := sharedBootstrap.NewDeps("../.env")
+	depedency, err := sharedBootstrap.NewDeps("../.env", false)
 	if err != nil {
 		log.Fatalf("error injecting depedency %v", err)
 	}

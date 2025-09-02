@@ -9,23 +9,26 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/rabbitmq"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/redis"
 	"gorm.io/gorm"
 )
 
 type Handler struct {
-	app         *fiber.App
-	db          *gorm.DB
-	redisClient *redis.RedisClient
-	timeout     time.Duration
+	app            *fiber.App
+	db             *gorm.DB
+	redisClient    *redis.RedisClient
+	rabbitMQClient *rabbitmq.RabbitMQClient
+	timeout        time.Duration
 }
 
-func NewHandler(app *fiber.App, db *gorm.DB, redisClient *redis.RedisClient) *Handler {
+func NewHandler(app *fiber.App, db *gorm.DB, redisClient *redis.RedisClient, rabbitMQClient *rabbitmq.RabbitMQClient) *Handler {
 	return &Handler{
-		app:         app,
-		db:          db,
-		redisClient: redisClient,
-		timeout:     15 * time.Second,
+		app:            app,
+		db:             db,
+		redisClient:    redisClient,
+		rabbitMQClient: rabbitMQClient,
+		timeout:        15 * time.Second,
 	}
 }
 
@@ -47,15 +50,24 @@ func (h *Handler) Listen() {
 	start := time.Now()
 
 	// Shutdown Fiber HTTP Server
-	if err := h.app.ShutdownWithContext(ctx); err != nil {
-		log.Printf("[Shutdown] Error shutting down HTTP server: %v", err)
+	if h.app != nil {
+		if err := h.app.ShutdownWithContext(ctx); err != nil {
+			log.Printf("[Shutdown] Error shutting down HTTP server: %v", err)
+		}
 	}
 
 	// Shutdown Redis
-	h.shutdownRedis()
+	if h.redisClient != nil {
+		h.shutdownRedis()
+	}
 
 	// Shutdown Database
 	h.shutdownDB(ctx)
+
+	// Shutdown Rabbitmq
+	if h.rabbitMQClient != nil {
+		h.shutdownRabbitMQ()
+	}
 
 	duration := time.Since(start)
 	if ctx.Err() == context.DeadlineExceeded {
@@ -110,5 +122,15 @@ func (h *Handler) shutdownDB(ctx context.Context) {
 				log.Printf("[Shutdown] DB: Waiting on %d connections", sqlDB.Stats().InUse)
 			}
 		}
+	}
+}
+
+func (h *Handler) shutdownRabbitMQ() {
+	if !h.rabbitMQClient.Connection.IsClosed() {
+		defer h.rabbitMQClient.Connection.Close()
+	}
+
+	if !h.rabbitMQClient.Channel.IsClosed() {
+		defer h.rabbitMQClient.Channel.Close()
 	}
 }
