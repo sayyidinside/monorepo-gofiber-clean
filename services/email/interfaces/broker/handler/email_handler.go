@@ -34,7 +34,9 @@ func (h *emailHandler) SendEmail(body []byte) error {
 		return err
 	}
 
-	h.service.SendEmail(ctx, email)
+	if err := h.service.SendEmail(ctx, email); err != nil {
+		return err
+	}
 
 	return nil
 }
