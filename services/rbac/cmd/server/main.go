@@ -35,7 +35,10 @@ func main() {
 
 	app.Use(helpers.ErrorHelper)
 
-	bootstrap.Initialize(app, depedency.DB, depedency.Redis.CacheClient, depedency.Redis.LockClient)
+	bootstrap.Initialize(
+		app, depedency.DB, depedency.Redis.CacheClient,
+		depedency.Redis.LockClient, depedency.RabbitMQ,
+	)
 
 	app.Use(helpers.NotFoundHelper)
 

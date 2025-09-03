@@ -10,13 +10,14 @@ import (
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/repository"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/domain/service"
 	sharedBootstrap "github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/bootstrap"
+	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/rabbitmq"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/infrastructure/redis"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/interfaces/http/middleware"
 	"github.com/sayyidinside/monorepo-gofiber-clean/shared/pkg/helpers"
 	"gorm.io/gorm"
 )
 
-func Initialize(app *fiber.App, db *gorm.DB, cacheRedis *redis.CacheClient, lockRedis *redis.LockClient) {
+func Initialize(app *fiber.App, db *gorm.DB, cacheRedis *redis.CacheClient, lockRedis *redis.LockClient, rabbitMQClient *rabbitmq.RabbitMQClient) {
 	// Repositories
 	userRepo := repository.NewUserRepository(db)
 	permissionRepo := repository.NewPermissionRepository(db)
@@ -25,11 +26,12 @@ func Initialize(app *fiber.App, db *gorm.DB, cacheRedis *redis.CacheClient, lock
 	refreshTokenRepo := repository.NewRefreshTokenRepository(db)
 
 	// Service
+	broadcastService := service.NewBroadcastService(userRepo, rabbitMQClient, cacheRedis)
 	userService := service.NewUserService(userRepo, roleRepo, cacheRedis)
 	permissionService := service.NewPermissionService(permissionRepo, moduleRepo)
 	moduleService := service.NewModuleService(moduleRepo)
 	roleService := service.NewRoleService(roleRepo, permissionRepo)
-	authService := service.NewAuthService(refreshTokenRepo, userRepo)
+	authService := service.NewAuthService(refreshTokenRepo, userRepo, broadcastService)
 
 	// Handler
 	userHandler := handler.NewUserHandler(userService)
@@ -53,7 +55,7 @@ func Initialize(app *fiber.App, db *gorm.DB, cacheRedis *redis.CacheClient, lock
 }
 
 func InitApp() *sharedBootstrap.Deps {
-	deps, err := sharedBootstrap.NewDeps("../../.env", false)
+	deps, err := sharedBootstrap.NewDeps("../../.env", true)
 	if err != nil {
 		log.Fatalf("Failed to connect to depedency: %v", err)
 	}

@@ -26,12 +26,17 @@ type AuthService interface {
 type authService struct {
 	refreshTokenRepository repository.RefreshTokenRepository
 	userRepository         repository.UserRepository
+	broadcastService       BroadcastService
 }
 
-func NewAuthService(refreshTokenRepository repository.RefreshTokenRepository, userRepository repository.UserRepository) AuthService {
+func NewAuthService(
+	refreshTokenRepository repository.RefreshTokenRepository, userRepository repository.UserRepository,
+	broadcastService BroadcastService,
+) AuthService {
 	return &authService{
 		refreshTokenRepository: refreshTokenRepository,
 		userRepository:         userRepository,
+		broadcastService:       broadcastService,
 	}
 }
 
@@ -85,6 +90,18 @@ func (s *authService) Login(ctx context.Context, input *model.LoginInput) helper
 			Message: "failed registering token",
 		}
 	}
+
+	emailContent, err := model.ToTemplateEmail("Login", "Success")
+	if err != nil {
+		return helpers.BaseResponse{
+			Status:  fiber.StatusInternalServerError,
+			Success: false,
+			Errors:  err,
+			Message: "failed constructing email content",
+		}
+	}
+
+	s.broadcastService.SendEmail(ctx, user.ID, "New Login Information", emailContent)
 
 	return helpers.BaseResponse{
 		Status:  fiber.StatusOK,
