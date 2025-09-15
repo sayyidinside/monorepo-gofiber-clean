@@ -8,12 +8,14 @@ The repo is split into services/ (each service is a standalone module) and a sha
 - **GoFiber**: Web framework for building fast and scalable APIs.
 - **GORM**: Object-Relational Mapper (ORM) for database operations, utilizing GORM datatypes.
 - **Redis**: In-memory key–value database, used as a distributed cache and message broker, with optional durability.
+- **RabbitMQ**: RabbitMQ is an open-source message broker that helps systems communicate by sending, receiving, and managing messages.
 - **Air**: Live reload for Go applications during development.
 - **Zap**: Fast, structured logging.
 - **Validator V10**: Validation of incoming data for requests.
 - **Gocron**: Job scheduling for recurring tasks.
 - **Bluemonday**: HTML sanitizer for handling user-generated content securely.
 - **Viper**: For configuration management, with support for environment variables and multiple file formats (YAML, JSON, etc.), including auto-reloading of configuration files.
+- **Mockery**: A open source library that provides the ability to easily generate mocks for Golang interfaces, removes the boilerplate coding required to use mocks.
 - **Clean Architecture**: A layered approach to structure the codebase for maintainability and scalability.
 - **Monorepo**: software-development strategy in which the code for a number of projects is stored in the same repository.
 
@@ -60,6 +62,8 @@ The repo is split into services/ (each service is a standalone module) and a sha
 │   ├── pkg/                          # Shared libraries and utilities
 │   │   ├── helpers/                  # Generic helper functions (not domain-specific)
 │   │   └── utils/                    # Generic utility functions (not domain-specific)
+│   ├── mocks/                        # Shared generated mock of repository, service, etc
+│   └── tests/                        # Unit test folder for method and service inside shared
 ├── tests/                            # Unit and integration tests
 ├── migration/                        # Database migration and seeding tools
 └── .env                              # Environment variables
