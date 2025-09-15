@@ -12,3 +12,6 @@ test-html:
 
 cleaning-test:
 	@rm -f $(COVER)
+
+generate:
+	@go generate ./...
