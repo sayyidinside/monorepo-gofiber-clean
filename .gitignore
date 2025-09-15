@@ -2,3 +2,5 @@
 tmp/
 storage/logs/*
 logs/
+coverage
+coverage.out
