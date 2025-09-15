@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockery --name=ModuleRepository --output=./../../mocks/repository/ --filename=module_repository_mock.go
 type ModuleRepository interface {
 	FindByID(ctx context.Context, id uint) (*entity.Module, error)
 	FindByIDUnscoped(ctx context.Context, id uint) (*entity.Module, error)
